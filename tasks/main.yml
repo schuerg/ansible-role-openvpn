@@ -1,0 +1,35 @@
+---
+# tasks file for openvpn
+
+- name: Install OpenVPN using apt
+  apt:
+    name: openvpn
+    state: latest
+
+- name: Ensure /etc/openvpn directory is present
+  file:
+    path: /etc/openvpn
+    state: directory
+
+- name: Copy deploy example server.conf to /etc/openvpn
+  shell: 'gunzip --keep --stdout /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz > /etc/openvpn/server.conf'
+
+- name: Download easy-rsa 3.x
+  get_url:
+    url: https://github.com/OpenVPN/easy-rsa/releases/download/3.0.1/EasyRSA-3.0.1.tgz
+    dest: /tmp/easyrsa.tgz
+
+- name: Extract EasyRSA
+  unarchive:
+    src: /tmp/easyrsa.tgz
+    dest: /etc/openvpn
+    remote_src: true
+
+- name: Rename EasyRSA directory to /etc/openvpn/pki
+  shell: 'mv /etc/openvpn/EasyRSA* /etc/openvpn/pki'
+
+- name: Start and enable OpenVPN systemd service
+  systemd:
+    name: openvpn
+    state: started
+    enabled: True
