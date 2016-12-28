@@ -1,0 +1,7 @@
+---
+
+# To install all the roles defined in this file run:
+#   ansible-galaxy install -r requirements.yml
+
+# Roles from the Ansible Galaxy
+- src: schuerg.prerequisites
