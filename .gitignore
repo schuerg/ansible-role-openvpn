@@ -1,5 +1,6 @@
 # Ansible
 *.retry
+schuerg.*
 
 # Vagrant
 .vagrant/
